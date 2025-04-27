@@ -26,8 +26,11 @@ Bu proje, arkadaş grupları veya ev arkadaşları arasındaki ortak harcamalar�
 ## Nasıl Kullanılır?
 
 1.  Projeyi klonlayın veya dosyaları indirin.
-2.  `index.html` dosyasını web tarayıcınızda açın.
-3.  **Kişi Yönetimi** bölümünden hesaba dahil olacak kişileri ekleyin.
+2.  **Önemli:** Bu proje JavaScript Modülleri kullandığı için, `index.html` dosyasını doğrudan tarayıcıda açmak yerine bir yerel web sunucusu üzerinden çalıştırmanız gerekmektedir.
+    - **VS Code Kullanıcıları İçin:** [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) eklentisini kurup, `index.html` dosyasına sağ tıklayıp "Open with Live Server" seçeneğini kullanabilirsiniz.
+    - **Python Yüklü İse:** Terminal veya komut istemcisini proje klasöründe açıp `python -m http.server` komutunu çalıştırın ve tarayıcınızda `http://localhost:8000` adresine gidin.
+    - **Node.js Yüklü İse:** Terminalde `npm install -g http-server` komutuyla `http-server` paketini kurduktan sonra, proje klasöründe `http-server` komutunu çalıştırıp belirtilen adrese (genellikle `http://localhost:8080`) gidin.
+3.  Tarayıcıda açılan uygulama üzerinden **Kişi Yönetimi** bölümünden hesaba dahil olacak kişileri ekleyin.
 4.  **Yeni Ödeme / Düzenleme** bölümünden yapılan harcamaları kaydedin:
     - Ödeyen kişiyi seçin.
     - Tutarı, tarihi ve açıklamayı girin.
@@ -38,4 +41,4 @@ Bu proje, arkadaş grupları veya ev arkadaşları arasındaki ortak harcamalar�
 
 ## Lisans
 
-Bu proje MIT Lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakınız.
+Bu proje MIT Lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakınız. (Eğer bir LICENSE dosyası ekleyecekseniz bu satır kalmalı, yoksa silebilirsiniz.)
