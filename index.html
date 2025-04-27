@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Market Hesapı Takip</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome (İkonlar için) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Yerel CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container mt-4 mb-5">
+      <h2 class="text-center mb-4 fw-bold">Market Hesapı Takip</h2>
+
+      <!-- Ödeme Formu -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Yeni Ödeme / Düzenleme</h5>
+        </div>
+        <div class="card-body">
+          <form id="form" novalidate>
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6 col-md-6">
+                <label for="payer" class="form-label">Ödeyen Kişi</label>
+                <select id="payer" class="form-select" required></select>
+                <div class="invalid-feedback">Lütfen ödeyen kişiyi seçin.</div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <label for="amount" class="form-label">Ödenen Tutar (TL)</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text">₺</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="amount"
+                    name="amount"
+                    placeholder="150.00"
+                    step="0.01"
+                    min="0.01"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Lütfen geçerli bir tutar girin (0'dan büyük).
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <label for="date" class="form-label">Ödeme Tarihi</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="date"
+                  name="date"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Lütfen geçerli bir ödeme tarihi seçin.
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <label for="type" class="form-label">Ödeme Türü/Açıklama</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="type"
+                  name="type"
+                  placeholder="Market Alışverişi, Akşam Yemeği vb."
+                  required
+                />
+                <div class="invalid-feedback">
+                  Lütfen ödeme türünü veya açıklamasını girin.
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="form-label d-block mb-2"
+                  >Hesaba Dahil Olanlar</label
+                >
+                <div
+                  id="dahilOlanlarContainer"
+                  class="border p-2 rounded bg-light"
+                >
+                  <p class="text-muted small mb-0">Önce kişi ekleyiniz.</p>
+                </div>
+                <div
+                  class="invalid-feedback d-block"
+                  id="dahilOlanlarFeedback"
+                ></div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="fas fa-save me-1"></i> Ödeme Kaydet
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Kişi Ekleme ve Listesi / Özet -->
+      <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-header">
+              <h5 class="mb-0">Kişi Yönetimi</h5>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <form id="addPayerForm" class="mb-3">
+                <label for="newPayer" class="form-label">Yeni Kişi Ekle</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="newPayer"
+                    class="form-control"
+                    placeholder="Kişi Adı"
+                    required
+                  />
+                  <button type="submit" class="btn btn-success">
+                    <i class="fas fa-user-plus me-1"></i> Ekle
+                  </button>
+                </div>
+              </form>
+              <h6 class="mt-4">Kayıtlı Kişiler</h6>
+              <ul id="payerList" class="list-group mb-3">
+                <li class="list-group-item text-muted">
+                  Henüz kayıtlı kişi yok.
+                </li>
+              </ul>
+              <div class="mt-auto">
+                <hr />
+                <div class="d-grid">
+                  <button class="btn btn-danger btn-sm" id="clearAllDataButton">
+                    <i class="fas fa-exclamation-triangle me-1"></i> Tüm
+                    Verileri Temizle
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-header">
+              <h5 class="mb-0">Özet</h5>
+            </div>
+            <div class="card-body" id="summaryBody">
+              <p class="text-muted">Özet bilgileri hesaplanıyor...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Uyarı Alanı -->
+      <div
+        id="alert"
+        class="alert alert-dismissible fade show d-none"
+        role="alert"
+      >
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Ödeme Listesi -->
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Ödeme Geçmişi</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              class="table table-bordered table-hover table-striped table-sm"
+            >
+              <thead class="table-light text-center">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col" class="text-start">Ödeyen Kişi</th>
+                  <th scope="col">Tutar (TL)</th>
+                  <th scope="col">Bölüşüm</th>
+                  <!-- Değiştirildi -->
+                  <th scope="col">Kişi Başı</th>
+                  <th scope="col">Tarih</th>
+                  <th scope="col" class="text-start">Tür/Açıklama</th>
+                  <th scope="col" class="text-start">Borç Durumu</th>
+                  <th scope="col">Son Düzenleme</th>
+                  <th scope="col">İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="table" class="align-middle">
+                <tr>
+                  <td colspan="10" class="text-center text-muted">
+                    Yükleniyor...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Silme Onay Modalı -->
+    <div
+      class="modal fade"
+      id="deleteConfirmModal"
+      tabindex="-1"
+      aria-labelledby="deleteConfirmModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="deleteConfirmModalLabel">
+              İşlemi Onayla
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Bu işlem geri alınamaz. Devam etmek istediğinize emin misiniz?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              İptal
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="confirmDeleteButton"
+            >
+              Evet, Sil
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Yerel JS Modülü -->
+    <script type="module" src="js/app.js"></script>
+    <!-- Eklendi -->
+  </body>
+</html>
